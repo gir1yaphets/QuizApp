@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:test="http://schemas.android.com/tools"
+                android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/CadetBlue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        test:text="Congratulations!"/>
+
+    <TextView
+        android:id="@+id/tvSucceedTimes"
+        android:layout_below="@id/tvResult"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+        android:textColor="@color/CadetBlue"
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        test:text="You succeeded for 3 times"/>
+
+    <TextView
+        android:id="@+id/tvFailedTimes"
+        android:layout_below="@id/tvSucceedTimes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/DarkRed"
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        test:text="You failed for 3 times"/>
+
+    <TextView
+        android:id="@+id/tvShare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_corner_rect"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="Share your result"
+        android:textColor="@color/White"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

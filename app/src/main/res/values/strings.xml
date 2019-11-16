@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">QuizApp</string>
+    <string name="question_2">Which company do you like most?</string>
+    <string name="answer_2">Google</string>
+
+    <string name="result_ok">Congratulations, you passed the quiz!</string>
+    <string name="result_error">Sorry, you failed the quiz!</string>
+
+    <string name="success_times">Succeed times : </string>
+    <string name="failed_times">Failed times : </string>
+</resources>
