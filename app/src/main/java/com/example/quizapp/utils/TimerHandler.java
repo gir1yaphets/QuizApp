@@ -13,8 +13,12 @@ public class TimerHandler extends Handler {
 
     private boolean running;
 
+    private int limit;
+
     public interface OnTimerUpdateCallback {
         void onTimeUpdate(int type, String time);
+
+        void onTimeOut();
     }
 
     @Override
@@ -28,14 +32,21 @@ public class TimerHandler extends Handler {
                 callback.onTimeUpdate(msg.what, time);
             }
 
-            seconds++;
-            sendEmptyMessageDelayed(msg.what, 1000);
+            if (seconds < limit) {
+                seconds++;
+                sendEmptyMessageDelayed(msg.what, 1000);
+            } else {
+                if (callback != null) {
+                    callback.onTimeOut();
+                }
+            }
         }
     }
 
-    public void startTimer(int type) {
+    public void startTimer(int type, int limit) {
         if (!running) {
             running = true;
+            this.limit = limit;
             sendEmptyMessage(type);
         }
     }

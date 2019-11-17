@@ -2,6 +2,7 @@ package com.example.quizapp.recyclerview;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
@@ -71,6 +72,9 @@ public class MultipleChoiceAdapter extends CommonRecyclerAdapter<ChoiceModel> {
                     choice.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                     cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.White));
                 }
+            } else {
+                CheckBox checkBox = (CheckBox) holder.getViewById(R.id.checkbox);
+                data.setSelected(checkBox.isSelected());
             }
 
             result.setText(data.getResult());

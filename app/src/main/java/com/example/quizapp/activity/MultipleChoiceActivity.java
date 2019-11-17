@@ -3,6 +3,7 @@ package com.example.quizapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
@@ -11,7 +12,6 @@ import com.example.quizapp.recyclerview.CommonRecyclerAdapter;
 import com.example.quizapp.recyclerview.MultipleChoiceAdapter;
 import com.example.quizapp.utils.TimerHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -22,13 +22,15 @@ public class MultipleChoiceActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private TextView submitView;
 
+    private LinearLayout llTimerLayout;
     private TextView tvTotalTime;
     private TextView tvCurrTime;
 
     private MultipleChoiceAdapter adapter;
     private List<ChoiceModel> selectionList;
 
-    private int times = 0;
+    private int timesQ1 = 0;
+    private int timesQ2 = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +53,15 @@ public class MultipleChoiceActivity extends BaseActivity {
     }
 
     private void initView() {
+        llTimerLayout = findViewById(R.id.llTimerLayout);
         tvTotalTime = findViewById(R.id.tvTotalTime);
         tvCurrTime = findViewById(R.id.tvCurrTime);
+
+        if (useTimer) {
+            llTimerLayout.setVisibility(View.VISIBLE);
+        } else {
+            llTimerLayout.setVisibility(View.GONE);
+        }
 
         recyclerView = findViewById(R.id.rvChoiceList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -83,10 +92,10 @@ public class MultipleChoiceActivity extends BaseActivity {
                             choiceModel.setResult("Correct");
                             navigateToBlankFillActivity();
                         } else {
-                            times -= 1;
+                            timesQ1 -= 1;
                             choiceModel.setResult("Wrong");
 
-                            if (times == 0) {
+                            if (timesQ1 == 0) {
                                 navigateToResultActivity(false);
                                 return;
                             }
@@ -121,7 +130,9 @@ public class MultipleChoiceActivity extends BaseActivity {
     }
 
     private void initData() {
-        createMockData();
+        selectionList = ChoiceModel.createMockData();
+        timesQ1 = 2;
+        timesQ2 = 2;
     }
 
     @Override
@@ -135,72 +146,11 @@ public class MultipleChoiceActivity extends BaseActivity {
                     tvCurrTime.setText(time);
                 }
             }
+
+            @Override
+            public void onTimeOut() {
+                navigateToResultActivity(false);
+            }
         };
-    }
-
-    private void createMockData() {
-        selectionList = new ArrayList<>();
-
-        //question1
-        ChoiceModel questionModel1 = new ChoiceModel();
-        questionModel1.setQuestion(true);
-        questionModel1.setQuestionContent("Which language is the best one in the world?");
-
-        ChoiceModel choiceModel1 = new ChoiceModel();
-        choiceModel1.setChoice("A. Java");
-        choiceModel1.setCorrect(false);
-
-        ChoiceModel choiceModel2 = new ChoiceModel();
-        choiceModel1.setCheckedChoice(false);
-        choiceModel2.setChoice("B. Python");
-        choiceModel2.setCorrect(false);
-
-        ChoiceModel choiceModel3 = new ChoiceModel();
-        choiceModel3.setChoice("C. Swift");
-        choiceModel3.setCorrect(true);
-
-        ChoiceModel choiceModel4 = new ChoiceModel();
-        choiceModel4.setChoice("D. Kotlin");
-        choiceModel4.setCorrect(false);
-
-        //question2
-        ChoiceModel questionModel2 = new ChoiceModel();
-        questionModel2.setQuestion(true);
-        questionModel2.setQuestionContent("What is the mascot of UCI?");
-
-        ChoiceModel checkedModel1 = new ChoiceModel();
-        checkedModel1.setChoice("A. Anteater");
-        checkedModel1.setCheckedChoice(true);
-        checkedModel1.setCorrect(false);
-
-        ChoiceModel checkedModel2 = new ChoiceModel();
-        checkedModel2.setCheckedChoice(false);
-        checkedModel2.setCheckedChoice(true);
-        checkedModel2.setChoice("B. Python");
-        checkedModel2.setCorrect(false);
-
-        ChoiceModel checkedModel3 = new ChoiceModel();
-        checkedModel3.setChoice("C. Monkey");
-        checkedModel3.setCheckedChoice(true);
-        checkedModel3.setCorrect(true);
-
-        ChoiceModel checkedModel4 = new ChoiceModel();
-        checkedModel4.setCheckedChoice(true);
-        checkedModel4.setChoice("D. Fish");
-        checkedModel4.setCorrect(false);
-
-        selectionList.add(questionModel1);
-        selectionList.add(choiceModel1);
-        selectionList.add(choiceModel2);
-        selectionList.add(choiceModel3);
-        selectionList.add(choiceModel4);
-
-        selectionList.add(questionModel2);
-        selectionList.add(checkedModel1);
-        selectionList.add(checkedModel2);
-        selectionList.add(checkedModel3);
-        selectionList.add(checkedModel4);
-
-        times = selectionList.size() - 2;
     }
 }

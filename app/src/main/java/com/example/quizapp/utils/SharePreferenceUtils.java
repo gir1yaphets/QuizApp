@@ -11,6 +11,10 @@ public class SharePreferenceUtils {
     public static final String QUIZ_SUCCEED_TIMES = "QUIZ_SUCCEED_TIMES";
     public static final String QUIZ_FAILED_TIMES = "QUIZ_FAILED_TIMES";
 
+    public static final String USE_TIMER = "USE_TIMER";
+    public static final String TIMER_LIMIT = "TIMER_LIMIT";
+    public static final String USE_IMAGE_BUTTON = "USE_IMAGE_BUTTON";
+
     public static void setSharePreferenceName(String name) {
         mName = name;
     }
