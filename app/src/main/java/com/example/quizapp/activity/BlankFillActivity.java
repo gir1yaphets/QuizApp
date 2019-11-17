@@ -7,14 +7,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
+import com.example.quizapp.utils.TimerHandler;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class BlankFillActivity extends AppCompatActivity {
+public class BlankFillActivity extends BaseActivity {
     private TextView tvQuestion;
     private EditText etAnswer;
     private TextView tvSubmit;
+
+    private TextView tvTotalTime;
+    private TextView tvCurrTime;
 
     private String question;
     private String answer;
@@ -30,12 +33,29 @@ public class BlankFillActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected TimerHandler.OnTimerUpdateCallback getCallback() {
+        return new TimerHandler.OnTimerUpdateCallback() {
+            @Override
+            public void onTimeUpdate(int type, String time) {
+                if (type == TOTAL_TIMER) {
+                    tvTotalTime.setText(time);
+                } else {
+                    tvCurrTime.setText(time);
+                }
+            }
+        };
+    }
+
     private void initData() {
         question = getResources().getString(R.string.question_2);
         answer = getResources().getString(R.string.answer_2);
     }
 
     private void initView() {
+        tvTotalTime = findViewById(R.id.tvTotalTime);
+        tvCurrTime = findViewById(R.id.tvCurrTime);
+
         tvQuestion = findViewById(R.id.tvQuestion);
         etAnswer = findViewById(R.id.etAnswer);
 

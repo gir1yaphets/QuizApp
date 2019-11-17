@@ -9,22 +9,26 @@ import com.example.quizapp.R;
 import com.example.quizapp.model.ChoiceModel;
 import com.example.quizapp.recyclerview.CommonRecyclerAdapter;
 import com.example.quizapp.recyclerview.MultipleChoiceAdapter;
+import com.example.quizapp.utils.TimerHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MultipleChoiceActivity extends AppCompatActivity {
+public class MultipleChoiceActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private TextView questionView;
     private TextView submitView;
 
+    private TextView tvTotalTime;
+    private TextView tvCurrTime;
+
     private MultipleChoiceAdapter adapter;
     private List<ChoiceModel> selectionList;
+
 
     private int times = 0;
 
@@ -41,15 +45,24 @@ public class MultipleChoiceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         clearSelectedState();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     private void initView() {
         questionView = findViewById(R.id.tvQuestion);
         questionView.setText("Which language is the best one in the world?");
 
+        tvTotalTime = findViewById(R.id.tvTotalTime);
+        tvCurrTime = findViewById(R.id.tvCurrTime);
+
         recyclerView = findViewById(R.id.rvChoiceList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
 
         submitView = findViewById(R.id.tvSubmit);
 
@@ -112,6 +125,24 @@ public class MultipleChoiceActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        createMockData();
+    }
+
+    @Override
+    protected TimerHandler.OnTimerUpdateCallback getCallback() {
+        return new TimerHandler.OnTimerUpdateCallback() {
+            @Override
+            public void onTimeUpdate(int type, String time) {
+                if (type == TOTAL_TIMER) {
+                    tvTotalTime.setText(time);
+                } else {
+                    tvCurrTime.setText(time);
+                }
+            }
+        };
+    }
+
+    private void createMockData() {
         selectionList = new ArrayList<>();
 
         ChoiceModel choiceModel1 = new ChoiceModel();
