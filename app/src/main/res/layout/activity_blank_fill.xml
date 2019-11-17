@@ -5,8 +5,16 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/llTimerLayout"
+        layout="@layout/layout_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </include>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvQuizCard"
+        android:layout_below="@id/llTimerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
