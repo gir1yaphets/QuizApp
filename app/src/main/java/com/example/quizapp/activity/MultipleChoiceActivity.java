@@ -57,7 +57,7 @@ public class MultipleChoiceActivity extends BaseActivity {
         tvTotalTime = findViewById(R.id.tvTotalTime);
         tvCurrTime = findViewById(R.id.tvCurrTime);
 
-        if (useTimer) {
+        if (useTimerQuiz1) {
             llTimerLayout.setVisibility(View.VISIBLE);
         } else {
             llTimerLayout.setVisibility(View.GONE);
