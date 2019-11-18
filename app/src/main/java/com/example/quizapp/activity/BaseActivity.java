@@ -15,18 +15,39 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TimerHandler totalHandler;
     private TimerHandler currHandler;
 
-    protected boolean useTimer = false;
-    private int timerLimit = 0;
+    private static final String MultipleChoiceActivity = "MultipleChoiceActivity";
+    private static final String BlankFillActivity = "BlankFillActivity";
+
+    protected boolean useTimerQuiz1 = false;
+    private int timerLimit1 = 0;
+
+    protected boolean useTimerQuiz2 = false;
+    private int timerLimit2 = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        useTimer = SharePreferenceUtils.getBool(this, SharePreferenceUtils.USE_TIMER);
-        if (useTimer) {
-            timerLimit = SharePreferenceUtils.getInt(this, SharePreferenceUtils.TIMER_LIMIT);
-            initTotalTimer();
-            initCurrTimer();
+        if (MultipleChoiceActivity.equals(getClass().getSimpleName())) {
+            useTimerQuiz1 = SharePreferenceUtils.getBool(this, SharePreferenceUtils.USE_TIMER_QUIZ_1);
+            if (useTimerQuiz1) {
+                timerLimit1 = SharePreferenceUtils.getInt(this, SharePreferenceUtils.TIMER_LIMIT_1);
+
+                if (timerLimit1 > 0) {
+                    initTotalTimer();
+                    initCurrTimer(timerLimit1);
+                }
+            }
+        } else {
+            useTimerQuiz2 = SharePreferenceUtils.getBool(this, SharePreferenceUtils.USE_TIMER_QUIZ_2);
+            if (useTimerQuiz2) {
+                timerLimit2 = SharePreferenceUtils.getInt(this, SharePreferenceUtils.TIMER_LIMIT_2);
+
+                if (timerLimit2 > 0) {
+                    initTotalTimer();
+                    initCurrTimer(timerLimit2);
+                }
+            }
         }
     }
 
@@ -34,8 +55,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (useTimer) {
-            currHandler.startTimer(CURRENT_TIMER, timerLimit);
+        if (useTimerQuiz1) {
+            currHandler.startTimer(CURRENT_TIMER, timerLimit1);
+        }
+
+        if (useTimerQuiz2) {
+            currHandler.startTimer(CURRENT_TIMER, timerLimit2);
         }
     }
 
@@ -43,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (useTimer) {
+        if (useTimerQuiz1 || useTimerQuiz2) {
             currHandler.stopTimer(CURRENT_TIMER);
         }
     }
@@ -52,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (useTimer) {
+        if (useTimerQuiz1 || useTimerQuiz2) {
             currHandler.stopTimer(TOTAL_TIMER);
             totalHandler.stopTimer(TOTAL_TIMER);
         }
@@ -65,10 +90,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         totalHandler.startTimer(TOTAL_TIMER, Integer.MAX_VALUE);
     }
 
-    private void initCurrTimer() {
+    private void initCurrTimer(int limit) {
         currHandler = new TimerHandler();
         currHandler.setCallback(getCallback());
-        currHandler.startTimer(CURRENT_TIMER, timerLimit);
+        currHandler.startTimer(CURRENT_TIMER, limit);
     }
 
     protected abstract TimerHandler.OnTimerUpdateCallback getCallback();
