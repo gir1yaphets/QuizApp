@@ -3,6 +3,7 @@ package com.example.quizapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
@@ -11,7 +12,6 @@ import com.example.quizapp.recyclerview.CommonRecyclerAdapter;
 import com.example.quizapp.recyclerview.MultipleChoiceAdapter;
 import com.example.quizapp.utils.TimerHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -20,17 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MultipleChoiceActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    private TextView questionView;
     private TextView submitView;
 
+    private LinearLayout llTimerLayout;
     private TextView tvTotalTime;
     private TextView tvCurrTime;
 
     private MultipleChoiceAdapter adapter;
     private List<ChoiceModel> selectionList;
 
-
-    private int times = 0;
+    private int timesQ1 = 0;
+    private int timesQ2 = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,11 +53,15 @@ public class MultipleChoiceActivity extends BaseActivity {
     }
 
     private void initView() {
-        questionView = findViewById(R.id.tvQuestion);
-        questionView.setText("Which language is the best one in the world?");
-
+        llTimerLayout = findViewById(R.id.llTimerLayout);
         tvTotalTime = findViewById(R.id.tvTotalTime);
         tvCurrTime = findViewById(R.id.tvCurrTime);
+
+        if (useTimer) {
+            llTimerLayout.setVisibility(View.VISIBLE);
+        } else {
+            llTimerLayout.setVisibility(View.GONE);
+        }
 
         recyclerView = findViewById(R.id.rvChoiceList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,6 +71,7 @@ public class MultipleChoiceActivity extends BaseActivity {
         submitView = findViewById(R.id.tvSubmit);
 
         adapter = new MultipleChoiceAdapter(this, selectionList);
+        adapter.setMultipleViewType(true);
         adapter.setOnItemViewClickListener(new CommonRecyclerAdapter.OnItemViewClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -87,10 +92,10 @@ public class MultipleChoiceActivity extends BaseActivity {
                             choiceModel.setResult("Correct");
                             navigateToBlankFillActivity();
                         } else {
-                            times -= 1;
+                            timesQ1 -= 1;
                             choiceModel.setResult("Wrong");
 
-                            if (times == 0) {
+                            if (timesQ1 == 0) {
                                 navigateToResultActivity(false);
                                 return;
                             }
@@ -125,7 +130,9 @@ public class MultipleChoiceActivity extends BaseActivity {
     }
 
     private void initData() {
-        createMockData();
+        selectionList = ChoiceModel.createMockData();
+        timesQ1 = 2;
+        timesQ2 = 2;
     }
 
     @Override
@@ -139,33 +146,11 @@ public class MultipleChoiceActivity extends BaseActivity {
                     tvCurrTime.setText(time);
                 }
             }
+
+            @Override
+            public void onTimeOut() {
+                navigateToResultActivity(false);
+            }
         };
-    }
-
-    private void createMockData() {
-        selectionList = new ArrayList<>();
-
-        ChoiceModel choiceModel1 = new ChoiceModel();
-        choiceModel1.setChoice("A. Java");
-        choiceModel1.setCorrect(false);
-
-        ChoiceModel choiceModel2 = new ChoiceModel();
-        choiceModel2.setChoice("B. Python");
-        choiceModel2.setCorrect(false);
-
-        ChoiceModel choiceModel3 = new ChoiceModel();
-        choiceModel3.setChoice("C. Swift");
-        choiceModel3.setCorrect(true);
-
-        ChoiceModel choiceModel4 = new ChoiceModel();
-        choiceModel4.setChoice("D. Kotlin");
-        choiceModel4.setCorrect(false);
-
-        selectionList.add(choiceModel1);
-        selectionList.add(choiceModel2);
-        selectionList.add(choiceModel3);
-        selectionList.add(choiceModel4);
-
-        times = selectionList.size() - 2;
     }
 }

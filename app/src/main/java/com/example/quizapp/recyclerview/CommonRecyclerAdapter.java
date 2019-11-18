@@ -16,6 +16,16 @@ public abstract class CommonRecyclerAdapter <T> extends RecyclerView.Adapter<Com
     protected Context mContext;
     private OnItemViewClickListener mListener;
 
+    public boolean isMultipleViewType() {
+        return isMultipleViewType;
+    }
+
+    public void setMultipleViewType(boolean multipleViewType) {
+        isMultipleViewType = multipleViewType;
+    }
+
+    private boolean isMultipleViewType;
+
     public CommonRecyclerAdapter(Context mContext, List<T> mData) {
         this.mData = mData;
         this.mContext = mContext;
@@ -23,17 +33,32 @@ public abstract class CommonRecyclerAdapter <T> extends RecyclerView.Adapter<Com
 
     @Override
     public CommonRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(getLayoutResId(), parent, false);
+        View view;
+        if (isMultipleViewType) {
+            view = LayoutInflater.from(mContext).inflate(getLayoutResId(viewType), parent, false);
+        } else {
+            view = LayoutInflater.from(mContext).inflate(getLayoutResId(), parent, false);
+        }
+
         CommonRecyclerHolder holder = new CommonRecyclerHolder(view);
         return holder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return getViewType(position);
     }
 
     @Override
     public void onBindViewHolder(CommonRecyclerHolder holder, final int position) {
         if (mData != null) {
             T data = mData.get(position);
-            convertView(holder, data);
+
+            if (isMultipleViewType) {
+                convertView(holder, data, getViewType(position));
+            } else {
+                convertView(holder, data);
+            }
 
             if (mListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +93,15 @@ public abstract class CommonRecyclerAdapter <T> extends RecyclerView.Adapter<Com
         return mData;
     }
 
-    protected abstract @LayoutRes
-    int getLayoutResId();
+    protected abstract @LayoutRes int getLayoutResId();
+
+    protected abstract @LayoutRes int getLayoutResId(int type);
+
+    protected abstract int getViewType(int position);
 
     protected abstract void convertView(CommonRecyclerHolder holder, T data);
+
+    protected abstract void convertView(CommonRecyclerHolder holder, T data, int type);
 
     public interface OnItemViewClickListener {
         void onItemClick(View view, int position);

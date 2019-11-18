@@ -14,15 +14,30 @@
         app:cardPreventCornerOverlap="true"
         app:cardCornerRadius="20dp">
 
-        <TextView
-            android:id="@+id/tvContent"
+        <LinearLayout
+            android:id="@+id/llCheckedLayout"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:textSize="15sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:minHeight="60dp"
-            test:text="Hello"/>
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvContent"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:minHeight="60dp"
+                test:text="Hello"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvResult"

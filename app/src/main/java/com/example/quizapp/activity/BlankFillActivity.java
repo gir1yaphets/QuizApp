@@ -44,6 +44,11 @@ public class BlankFillActivity extends BaseActivity {
                     tvCurrTime.setText(time);
                 }
             }
+
+            @Override
+            public void onTimeOut() {
+                navigateToResultActivity(false);
+            }
         };
     }
 

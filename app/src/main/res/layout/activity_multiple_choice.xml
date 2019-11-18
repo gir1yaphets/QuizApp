@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:test="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="10dp">
@@ -21,34 +19,11 @@
                 android:layout_height="wrap_content">
             </include>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvQuizCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/llTimerLayout"
-                android:layout_margin="8dp"
-                android:background="@color/cardview_shadow_end_color"
-                app:cardCornerRadius="20dp"
-                app:cardPreventCornerOverlap="true">
-
-                <TextView
-                    android:id="@+id/tvQuestion"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:minHeight="120dp"
-                    android:padding="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    test:text="Hello"/>
-
-            </androidx.cardview.widget.CardView>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvChoiceList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cvQuizCard"
+                android:layout_below="@id/llTimerLayout"
                 android:layout_marginTop="10dp">
             </androidx.recyclerview.widget.RecyclerView>
 
