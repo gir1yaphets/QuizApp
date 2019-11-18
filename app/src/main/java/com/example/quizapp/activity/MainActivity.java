@@ -17,10 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvStart;
-    private RelativeLayout rlTimerLimit;
+    private RelativeLayout rlTimerLimit1;
+    private RelativeLayout rlTimerLimit2;
 
-    private CheckBox cbTimer;
-    private EditText etTimerLimit;
+    private CheckBox cbTimer1;
+    private EditText etTimerLimit1;
+
+    private CheckBox cbTimer2;
+    private EditText etTimerLimit2;
+
     private CheckBox cbImageButton;
 
     @Override
@@ -35,11 +40,16 @@ public class MainActivity extends AppCompatActivity {
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharePreferenceUtils.putBool(MainActivity.this, SharePreferenceUtils.USE_TIMER, cbTimer.isChecked());
+                SharePreferenceUtils.putBool(MainActivity.this, SharePreferenceUtils.USE_TIMER_QUIZ_1, cbTimer1.isChecked());
+                SharePreferenceUtils.putBool(MainActivity.this, SharePreferenceUtils.USE_TIMER_QUIZ_2, cbTimer2.isChecked());
                 SharePreferenceUtils.putBool(MainActivity.this, SharePreferenceUtils.USE_IMAGE_BUTTON, cbImageButton.isChecked());
 
-                if (cbTimer.isChecked()) {
-                    SharePreferenceUtils.putInt(MainActivity.this, SharePreferenceUtils.TIMER_LIMIT, Integer.valueOf(etTimerLimit.getText().toString()));
+                if (cbTimer1.isChecked()) {
+                    SharePreferenceUtils.putInt(MainActivity.this, SharePreferenceUtils.TIMER_LIMIT_1, Integer.valueOf(etTimerLimit1.getText().toString()));
+                }
+
+                if (cbTimer2.isChecked()) {
+                    SharePreferenceUtils.putInt(MainActivity.this, SharePreferenceUtils.TIMER_LIMIT_2, Integer.valueOf(etTimerLimit2.getText().toString()));
                 }
 
                 Intent intent = new Intent(MainActivity.this, MultipleChoiceActivity.class);
@@ -47,22 +57,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        rlTimerLimit = findViewById(R.id.rlTimerLimit);
+        rlTimerLimit1 = findViewById(R.id.rlTimerLimit1);
+        cbTimer1 = findViewById(R.id.cbTimer1);
+        etTimerLimit1 = findViewById(R.id.etTimerLimit1);
 
-        cbTimer = findViewById(R.id.cbTimer);
-        cbTimer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        rlTimerLimit2 = findViewById(R.id.rlTimerLimit2);
+        cbTimer2 = findViewById(R.id.cbTimer2);
+        etTimerLimit2 = findViewById(R.id.etTimerLimit2);
+
+        setTimerSetting(rlTimerLimit1, cbTimer1);
+        setTimerSetting(rlTimerLimit2, cbTimer2);
+
+        cbImageButton = findViewById(R.id.cbImageButton);
+    }
+
+    private void setTimerSetting(final RelativeLayout layout, CheckBox timerCheckBox) {
+        timerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    rlTimerLimit.setVisibility(View.VISIBLE);
+                    layout.setVisibility(View.VISIBLE);
                 } else {
-                    rlTimerLimit.setVisibility(View.GONE);
+                    layout.setVisibility(View.GONE);
                 }
             }
         });
-
-        etTimerLimit = findViewById(R.id.etTimerLimit);
-
-        cbImageButton = findViewById(R.id.cbImageButton);
     }
 }

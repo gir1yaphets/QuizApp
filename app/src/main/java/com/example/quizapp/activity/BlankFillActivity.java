@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
@@ -60,6 +61,13 @@ public class BlankFillActivity extends BaseActivity {
     private void initView() {
         tvTotalTime = findViewById(R.id.tvTotalTime);
         tvCurrTime = findViewById(R.id.tvCurrTime);
+
+        LinearLayout llTimerLayout = findViewById(R.id.llTimerLayout);
+        if (useTimerQuiz2) {
+            llTimerLayout.setVisibility(View.VISIBLE);
+        } else {
+            llTimerLayout.setVisibility(View.GONE);
+        }
 
         tvQuestion = findViewById(R.id.tvQuestion);
         etAnswer = findViewById(R.id.etAnswer);
