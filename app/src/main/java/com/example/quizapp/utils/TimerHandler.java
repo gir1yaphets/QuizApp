@@ -15,6 +15,9 @@ public class TimerHandler extends Handler {
 
     private int limit;
 
+    public static final int TOTAL_TIMER = 0;
+    public static final int VISIBLE_TIMER = 1;
+
     public interface OnTimerUpdateCallback {
         void onTimeUpdate(int type, String time);
 

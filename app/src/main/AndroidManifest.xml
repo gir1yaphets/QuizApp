@@ -27,6 +27,8 @@
                   android:screenOrientation="unspecified" />
 
         <activity android:name=".activity.ResultActivity"/>
+
+        <service android:name=".service.TimerService"/>
     </application>
 
 </manifest>
