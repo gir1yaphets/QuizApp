@@ -18,8 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MultipleChoiceActivity"/>
-        <activity android:name=".activity.BlankFillActivity"/>
+        <activity android:name=".activity.MultipleChoiceActivity"
+                  android:configChanges="orientation|screenSize|layoutDirection"
+                  android:screenOrientation="unspecified" />
+
+        <activity android:name=".activity.BlankFillActivity"
+                  android:configChanges="orientation|screenSize|layoutDirection"
+                  android:screenOrientation="unspecified" />
+
         <activity android:name=".activity.ResultActivity"/>
     </application>
 

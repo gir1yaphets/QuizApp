@@ -28,6 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initTimer();
+    }
+
+    private void initTimer() {
         if (MultipleChoiceActivity.equals(getClass().getSimpleName())) {
             useTimerQuiz1 = SharePreferenceUtils.getBool(this, SharePreferenceUtils.USE_TIMER_QUIZ_1);
             if (useTimerQuiz1) {
