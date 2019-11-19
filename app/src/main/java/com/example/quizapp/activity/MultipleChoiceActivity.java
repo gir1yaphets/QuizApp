@@ -2,6 +2,7 @@ package com.example.quizapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,6 +33,10 @@ public class MultipleChoiceActivity extends BaseActivity {
     private int timesQ1 = 0;
     private int timesQ2 = 0;
 
+    private static final int QUESTION_1 = 1;
+    private static final int QUESTION_2 = 2;
+    private static final int QUESTION_ALL = 3;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,7 @@ public class MultipleChoiceActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        clearSelectedState();
+        clearSelectedState(QUESTION_ALL);
     }
 
     @Override
@@ -75,10 +80,30 @@ public class MultipleChoiceActivity extends BaseActivity {
         adapter.setOnItemViewClickListener(new CommonRecyclerAdapter.OnItemViewClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                clearSelectedState();
+                ChoiceModel data = selectionList.get(position);
+                if (!data.isCheckedChoice()) {
+                    clearSelectedState(QUESTION_1);
+                    data.setSelected(true);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
-                selectionList.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
+        adapter.setOnCheckedChnageListener(new MultipleChoiceAdapter.onCheckedChangeListener() {
+            @Override
+            public void onChange(boolean checked, ChoiceModel choiceModel) {
+                if (choiceModel.isCheckedChoice()) {
+                    clearSelectedState(QUESTION_2);
+
+                    choiceModel.setSelected(true);
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -86,35 +111,59 @@ public class MultipleChoiceActivity extends BaseActivity {
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean resultQ1 = false, resultQ2 = false;
+
                 for (ChoiceModel choiceModel : selectionList) {
                     if (choiceModel.isSelected()) {
                         if (choiceModel.isCorrect()) {
+                            if (choiceModel.isCheckedChoice()) {
+                                resultQ2 = true;
+                            } else {
+                                resultQ1 = true;
+                            }
                             choiceModel.setResult("Correct");
-                            navigateToBlankFillActivity();
                         } else {
-                            timesQ1 -= 1;
+                            if (choiceModel.isCheckedChoice()) {
+                                timesQ2 -= 1;
+                            } else {
+                                timesQ1 -= 1;
+                            }
+
                             choiceModel.setResult("Wrong");
 
-                            if (timesQ1 == 0) {
+                            if (timesQ1 == 0 || timesQ2 == 0) {
                                 navigateToResultActivity(false);
                                 return;
                             }
                         }
+
                         adapter.notifyDataSetChanged();
-                        break;
                     }
+                }
+
+                if (resultQ1 && resultQ2) {
+                    navigateToBlankFillActivity();
                 }
             }
         });
     }
 
-    private void clearSelectedState() {
+    private void clearSelectedState(int questionNum) {
         for (ChoiceModel choiceModel : selectionList) {
-            choiceModel.setSelected(false);
-            choiceModel.setResult("");
-        }
+            if (questionNum == 1) {
+                if (!choiceModel.isCheckedChoice()) {
+                    choiceModel.setSelected(false);
+                    choiceModel.setResult("");
+                }
+            }
 
-        adapter.notifyDataSetChanged();
+            if (questionNum == 2){
+                if (choiceModel.isCheckedChoice()) {
+                    choiceModel.setSelected(false);
+                    choiceModel.setResult("");
+                }
+            }
+        }
     }
 
     private void navigateToResultActivity(boolean result) {
