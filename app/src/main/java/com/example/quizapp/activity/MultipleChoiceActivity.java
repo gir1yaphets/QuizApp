@@ -1,8 +1,8 @@
 package com.example.quizapp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +55,12 @@ public class MultipleChoiceActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("pengxl", "MultipleActivity onDestroy: ");
     }
 
     private void initView() {
@@ -166,18 +172,6 @@ public class MultipleChoiceActivity extends BaseActivity {
         }
     }
 
-    private void navigateToResultActivity(boolean result) {
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(ResultActivity.EXTRA_RESULT, result);
-        startActivity(intent);
-        finish();
-    }
-
-    private void navigateToBlankFillActivity() {
-        Intent intent = new Intent(this, BlankFillActivity.class);
-        startActivity(intent);
-    }
-
     private void initData() {
         selectionList = ChoiceModel.createMockData();
         timesQ1 = 2;
@@ -198,7 +192,7 @@ public class MultipleChoiceActivity extends BaseActivity {
 
             @Override
             public void onTimeOut() {
-                navigateToResultActivity(false);
+                MultipleChoiceActivity.super.onTimeOut();
             }
         };
     }

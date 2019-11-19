@@ -26,7 +26,8 @@
                   android:configChanges="orientation|screenSize|layoutDirection"
                   android:screenOrientation="unspecified" />
 
-        <activity android:name=".activity.ResultActivity"/>
+        <activity android:name=".activity.ResultActivity"
+            android:launchMode="singleInstance"/>
 
         <service android:name=".service.TimerService"/>
     </application>

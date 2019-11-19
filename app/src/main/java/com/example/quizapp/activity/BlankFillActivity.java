@@ -1,7 +1,7 @@
 package com.example.quizapp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,6 +35,13 @@ public class BlankFillActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Log.d("pengxl", "BlankFillActivity onDestroy: ");
+    }
+
+    @Override
     protected TimerHandler.OnTimerUpdateCallback getCallback() {
         return new TimerHandler.OnTimerUpdateCallback() {
             @Override
@@ -48,7 +55,10 @@ public class BlankFillActivity extends BaseActivity {
 
             @Override
             public void onTimeOut() {
-                navigateToResultActivity(false);
+                BlankFillActivity.super.onTimeOut();
+                if (isActive) {
+                    navigateToResultActivity(false);
+                }
             }
         };
     }
@@ -91,11 +101,5 @@ public class BlankFillActivity extends BaseActivity {
         });
 
         tvQuestion.setText(question);
-    }
-
-    private void navigateToResultActivity(boolean result) {
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(ResultActivity.EXTRA_RESULT, result);
-        startActivity(intent);
     }
 }

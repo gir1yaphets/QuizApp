@@ -2,6 +2,7 @@ package com.example.quizapp.utils;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -48,6 +49,7 @@ public class TimerHandler extends Handler {
 
     public void startTimer(int type, int limit) {
         if (!running) {
+            Log.d("pengxl", "startTimer: type = " + type);
             running = true;
             this.limit = limit;
             sendEmptyMessage(type);
@@ -56,6 +58,7 @@ public class TimerHandler extends Handler {
 
     public void stopTimer(int type) {
         if (running) {
+            Log.d("pengxl", "stopTimer: type = " + type);
             running = false;
 
             while (hasMessages(type)) {

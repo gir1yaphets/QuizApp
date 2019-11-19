@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.quizapp.utils.TimerHandler;
 
@@ -48,6 +49,8 @@ public class TimerService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+        Log.d("pengxl", "Service onDestroy: ");
+
         stopTimer(QUESTION_TIMER_1, VISIBLE_TIMER);
         stopTimer(QUESTION_TIMER_1, TOTAL_TIMER);
         stopTimer(QUESTION_TIMER_2, VISIBLE_TIMER);
@@ -55,6 +58,7 @@ public class TimerService extends Service {
     }
 
     public void startTimer(int question, int type, int limit) {
+        Log.d("pengxl", "service startTimer: question = " + question + " type = " + type);
         if (question == QUESTION_TIMER_1) {
             if (type == TOTAL_TIMER) {
                 totalHandlerQ1.startTimer(type, limit);
@@ -71,6 +75,7 @@ public class TimerService extends Service {
     }
 
     public void stopTimer(int question, int type) {
+        Log.d("pengxl", "service stopTimer: question = " + question + " type = " + type);
         if (question == QUESTION_TIMER_1) {
             if (type == TOTAL_TIMER) {
                 totalHandlerQ1.stopTimer(type);
