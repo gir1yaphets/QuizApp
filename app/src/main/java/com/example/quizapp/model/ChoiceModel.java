@@ -79,7 +79,7 @@ public class ChoiceModel {
         //question1
         ChoiceModel questionModel1 = new ChoiceModel();
         questionModel1.setQuestion(true);
-        questionModel1.setQuestionContent("Which language is the best one in the world?");
+        questionModel1.setQuestionContent("Q1:Which language is the best one in the world?");
 
         ChoiceModel choiceModel1 = new ChoiceModel();
         choiceModel1.setChoice("A. Java");
@@ -101,7 +101,7 @@ public class ChoiceModel {
         //question2
         ChoiceModel questionModel2 = new ChoiceModel();
         questionModel2.setQuestion(true);
-        questionModel2.setQuestionContent("What is the mascot of UCI?");
+        questionModel2.setQuestionContent("Q2:What is the mascot of UCI?");
 
         ChoiceModel checkedModel1 = new ChoiceModel();
         checkedModel1.setChoice("A. Anteater");

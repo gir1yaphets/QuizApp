@@ -3,6 +3,7 @@ package com.example.quizapp.recyclerview;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.quizapp.R;
@@ -17,6 +18,12 @@ public class MultipleChoiceAdapter extends CommonRecyclerAdapter<ChoiceModel> {
     private static final int TYPE_QUESTION = 0;
     private static final int TYPE_CHOICE1 = 1;
     private static final int TYPE_CHOICE2 = 2;
+
+    public void setOnCheckedChnageListener(onCheckedChangeListener l) {
+        this.listener = l;
+    }
+
+    private onCheckedChangeListener listener;
 
     public MultipleChoiceAdapter(Context mContext, List<ChoiceModel> data) {
         super(mContext, data);
@@ -56,7 +63,7 @@ public class MultipleChoiceAdapter extends CommonRecyclerAdapter<ChoiceModel> {
     }
 
     @Override
-    protected void convertView(CommonRecyclerHolder holder, ChoiceModel data, int type) {
+    protected void convertView(CommonRecyclerHolder holder, final ChoiceModel data, int type) {
         if (type == TYPE_CHOICE1 || type == TYPE_CHOICE2) {
             TextView choice = (TextView) holder.getViewById(R.id.tvContent);
             CardView cardView = (CardView) holder.getViewById(R.id.cvChoice);
@@ -74,7 +81,16 @@ public class MultipleChoiceAdapter extends CommonRecyclerAdapter<ChoiceModel> {
                 }
             } else {
                 CheckBox checkBox = (CheckBox) holder.getViewById(R.id.checkbox);
-                data.setSelected(checkBox.isSelected());
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (listener != null) {
+                            listener.onChange(b, data);
+                        }
+                    }
+                });
+
+                checkBox.setChecked(data.isSelected());
             }
 
             result.setText(data.getResult());
@@ -82,5 +98,9 @@ public class MultipleChoiceAdapter extends CommonRecyclerAdapter<ChoiceModel> {
             TextView question = (TextView) holder.getViewById(R.id.tvQuestion);
             question.setText(data.getQuestionContent());
         }
+    }
+
+    public interface onCheckedChangeListener {
+        void onChange(boolean checked, ChoiceModel choiceModel);
     }
 }
