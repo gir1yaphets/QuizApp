@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     private CheckBox cbImageButton;
 
+    private ImageButton ibStart;
+
+    private View.OnClickListener onClickListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        tvStart = findViewById(R.id.tvStart);
-        tvStart.setOnClickListener(new View.OnClickListener() {
+        onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharePreferenceUtils.putBool(MainActivity.this, SharePreferenceUtils.USE_TIMER_QUIZ_1, cbTimer1.isChecked());
@@ -55,7 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MultipleChoiceActivity.class);
                 startActivity(intent);
             }
-        });
+        };
+
+        tvStart = findViewById(R.id.tvStart);
+        tvStart.setOnClickListener(onClickListener);
+
+        ibStart = findViewById(R.id.ibStart);
+        ibStart.setVisibility(View.GONE);
+        ibStart.setOnClickListener(onClickListener);
 
         rlTimerLimit1 = findViewById(R.id.rlTimerLimit1);
         cbTimer1 = findViewById(R.id.cbTimer1);
@@ -69,6 +80,18 @@ public class MainActivity extends AppCompatActivity {
         setTimerSetting(rlTimerLimit2, cbTimer2);
 
         cbImageButton = findViewById(R.id.cbImageButton);
+        cbImageButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    tvStart.setVisibility(View.GONE);
+                    ibStart.setVisibility(View.VISIBLE);
+                } else {
+                    ibStart.setVisibility(View.GONE);
+                    tvStart.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void setTimerSetting(final RelativeLayout layout, CheckBox timerCheckBox) {

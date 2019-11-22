@@ -175,5 +175,22 @@
         android:text="Start Quiz"
         android:textColor="@color/White"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:visibility="invisible"/>
+
+    <ImageButton
+        android:id="@+id/ibStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/receipe_bg_off"
+        android:background="@drawable/round_corner_rect"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="Start Quiz"
+        android:textColor="@color/White"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:visibility="invisible"/>
 </RelativeLayout>
